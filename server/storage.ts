@@ -41,6 +41,7 @@ export class MemStorage implements IStorage {
     const conversion: Conversion = {
       id,
       ...insertConversion,
+      settings: insertConversion.settings || null,
       status: "pending",
       createdAt: new Date(),
       completedAt: null,

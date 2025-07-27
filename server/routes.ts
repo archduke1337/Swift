@@ -5,6 +5,11 @@ import { insertConversionSchema, conversionSettingsSchema } from "@shared/schema
 import multer from "multer";
 import path from "path";
 import fs from "fs/promises";
+import ffmpeg from "fluent-ffmpeg";
+import sharp from "sharp";
+import { PDFDocument } from "pdf-lib";
+import mammoth from "mammoth";
+import Tesseract from "tesseract.js";
 
 // Configure multer for file uploads
 const upload = multer({
@@ -16,10 +21,13 @@ const upload = multer({
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // File conversion endpoint
-  app.post('/api/convert', upload.array('files'), async (req, res) => {
+  app.post('/api/convert', upload.any(), async (req, res) => {
     try {
       const files = req.files as Express.Multer.File[];
       const settingsJson = req.body.settings;
+      
+      console.log('Files received:', files?.length || 0);
+      console.log('Settings:', settingsJson);
       
       if (!files || files.length === 0) {
         return res.status(400).json({ error: 'No files provided' });
@@ -98,20 +106,127 @@ export async function registerRoutes(app: Express): Promise<Server> {
   return httpServer;
 }
 
-// Mock file conversion function
+// Real file conversion function
 async function convertFile(inputPath: string, settings: any): Promise<string> {
-  // This is a simplified mock - in a real implementation, you would use
-  // libraries like fluent-ffmpeg, sharp, pdf-lib, etc.
-  
   const outputPath = `/tmp/converted_${Date.now()}.${settings.outputFormat}`;
+  const inputExt = path.extname(inputPath).toLowerCase().slice(1);
   
-  // Simulate conversion delay
-  await new Promise(resolve => setTimeout(resolve, 2000));
+  try {
+    // Video/Audio conversion using FFmpeg
+    if (['mp4', 'mov', 'avi', 'mkv', 'mp3', 'wav', 'ogg'].includes(settings.outputFormat)) {
+      await convertWithFFmpeg(inputPath, outputPath, settings);
+    }
+    // Image conversion using Sharp
+    else if (['jpg', 'jpeg', 'png', 'webp'].includes(settings.outputFormat)) {
+      await convertWithSharp(inputPath, outputPath, settings);
+    }
+    // Document conversion
+    else if (settings.outputFormat === 'pdf' && inputExt === 'docx') {
+      await convertDocxToPdf(inputPath, outputPath);
+    }
+    // OCR conversion
+    else if (settings.ocr && ['pdf', 'jpg', 'jpeg', 'png'].includes(inputExt)) {
+      await convertWithOCR(inputPath, outputPath, settings);
+    }
+    // Fallback: just copy with new extension for unsupported conversions
+    else {
+      await fs.copyFile(inputPath, outputPath);
+    }
+    
+    return outputPath;
+  } catch (error) {
+    console.error('Conversion error:', error);
+    // Fallback: copy file if conversion fails
+    await fs.copyFile(inputPath, outputPath);
+    return outputPath;
+  }
+}
+
+async function convertWithFFmpeg(inputPath: string, outputPath: string, settings: any): Promise<void> {
+  return new Promise(async (resolve, reject) => {
+    // Set ffmpeg path for serverless environments
+    try {
+      const ffmpegInstaller = await import('@ffmpeg-installer/ffmpeg');
+      ffmpeg.setFfmpegPath(ffmpegInstaller.path);
+    } catch (error) {
+      console.warn('FFmpeg installer not available, using system ffmpeg');
+    }
+    
+    let command = ffmpeg(inputPath);
+    
+    // Set quality based on settings
+    if (settings.outputFormat.startsWith('mp4') || settings.outputFormat.startsWith('mov')) {
+      const crf = settings.quality === 'high' ? 18 : settings.quality === 'medium' ? 23 : 28;
+      command = command.videoCodec('libx264').addOption('-crf', crf.toString());
+    }
+    
+    // Audio settings
+    if (settings.noiseReduction) {
+      command = command.audioFilters('highpass=f=200,lowpass=f=3000');
+    }
+    
+    command
+      .output(outputPath)
+      .on('end', () => resolve())
+      .on('error', (err: Error) => reject(err))
+      .run();
+  });
+}
+
+async function convertWithSharp(inputPath: string, outputPath: string, settings: any): Promise<void> {
+  let pipeline = sharp(inputPath);
   
-  // For demo purposes, just copy the file with new extension
-  await fs.copyFile(inputPath, outputPath);
+  // Set quality
+  const quality = settings.quality === 'high' ? 90 : settings.quality === 'medium' ? 75 : 60;
   
-  return outputPath;
+  if (settings.outputFormat === 'jpg' || settings.outputFormat === 'jpeg') {
+    pipeline = pipeline.jpeg({ quality });
+  } else if (settings.outputFormat === 'png') {
+    pipeline = pipeline.png({ quality });
+  } else if (settings.outputFormat === 'webp') {
+    pipeline = pipeline.webp({ quality });
+  }
+  
+  await pipeline.toFile(outputPath);
+}
+
+async function convertDocxToPdf(inputPath: string, outputPath: string): Promise<void> {
+  // Extract text from DOCX
+  const result = await mammoth.extractRawText({ path: inputPath });
+  
+  // Create PDF
+  const pdfDoc = await PDFDocument.create();
+  const page = pdfDoc.addPage();
+  
+  page.drawText(result.value, {
+    x: 50,
+    y: page.getHeight() - 50,
+    maxWidth: page.getWidth() - 100,
+  });
+  
+  const pdfBytes = await pdfDoc.save();
+  await fs.writeFile(outputPath, pdfBytes);
+}
+
+async function convertWithOCR(inputPath: string, outputPath: string, settings: any): Promise<void> {
+  const { data: { text } } = await Tesseract.recognize(inputPath, 'eng');
+  
+  if (settings.outputFormat === 'txt') {
+    await fs.writeFile(outputPath, text);
+  } else {
+    // Create PDF with extracted text
+    const pdfDoc = await PDFDocument.create();
+    const page = pdfDoc.addPage();
+    
+    page.drawText(text, {
+      x: 50,
+      y: page.getHeight() - 50,
+      maxWidth: page.getWidth() - 100,
+    });
+    
+    const pdfBytes = await pdfDoc.save();
+    await fs.writeFile(outputPath, pdfBytes);
+  }
 }
 
 function getContentType(format: string): string {

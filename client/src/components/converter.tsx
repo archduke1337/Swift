@@ -35,12 +35,21 @@ export default function Converter() {
   const convertMutation = useMutation({
     mutationFn: async (data: { files: File[], settings: ConversionSettings }) => {
       const formData = new FormData();
-      data.files.forEach((file, index) => {
-        formData.append(`file_${index}`, file);
+      data.files.forEach((file) => {
+        formData.append('files', file);
       });
       formData.append('settings', JSON.stringify(data.settings));
       
-      const response = await apiRequest('POST', '/api/convert', formData);
+      const response = await fetch('/api/convert', {
+        method: 'POST',
+        body: formData,
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        throw new Error(errorData.error || 'Conversion failed');
+      }
+      
       return response.blob();
     },
     onSuccess: (blob) => {
