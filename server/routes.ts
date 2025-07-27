@@ -11,11 +11,29 @@ import { PDFDocument } from "pdf-lib";
 import mammoth from "mammoth";
 import Tesseract from "tesseract.js";
 
-// Configure multer for file uploads
+// Configure multer for file uploads with enhanced error handling
 const upload = multer({
   dest: '/tmp/uploads/',
   limits: {
     fileSize: 100 * 1024 * 1024, // 100MB limit
+    files: 10, // Maximum 10 files
+  },
+  fileFilter: (req, file, cb) => {
+    // Validate file types
+    const allowedMimes = [
+      'video/', 'audio/', 'image/', 'application/pdf', 'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'text/', 'application/json', 'text/csv', 'application/xml'
+    ];
+    
+    const isValid = allowedMimes.some(mime => file.mimetype.startsWith(mime));
+    
+    if (!isValid) {
+      cb(new Error(`Unsupported file type: ${file.mimetype}`));
+      return;
+    }
+    
+    cb(null, true);
   },
 });
 

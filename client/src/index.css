@@ -96,4 +96,37 @@
   .bg-swift-gray {
     background-color: var(--swift-gray);
   }
+  
+  /* Mobile touch optimization */
+  .touch-action-manipulation {
+    touch-action: manipulation;
+  }
+  
+  /* Mobile-friendly tap targets */
+  @media (max-width: 768px) {
+    .mobile-tap-target {
+      min-height: 44px;
+      min-width: 44px;
+    }
+    
+    .mobile-drag-zone {
+      min-height: 200px;
+      padding: 2rem 1rem;
+    }
+    
+    .mobile-spacing {
+      padding: 1rem;
+      margin: 0.5rem 0;
+    }
+  }
+  
+  /* Progress bar animation */
+  @keyframes pulse-progress {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+  
+  .progress-pulse {
+    animation: pulse-progress 1.5s ease-in-out infinite;
+  }
 }

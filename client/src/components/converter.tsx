@@ -34,6 +34,26 @@ export default function Converter() {
 
   const convertMutation = useMutation({
     mutationFn: async (data: { files: File[], settings: ConversionSettings }) => {
+      // Validate file size (100MB limit)
+      const maxSize = 100 * 1024 * 1024;
+      const oversizedFiles = data.files.filter(file => file.size > maxSize);
+      if (oversizedFiles.length > 0) {
+        throw new Error(`File too large: ${oversizedFiles[0].name}. Maximum size is 100MB.`);
+      }
+
+      // Validate file types
+      const allowedTypes = [
+        'video/', 'audio/', 'image/', 'application/pdf', 'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'text/', 'application/json', 'text/csv'
+      ];
+      const invalidFiles = data.files.filter(file => 
+        !allowedTypes.some(type => file.type.startsWith(type))
+      );
+      if (invalidFiles.length > 0) {
+        throw new Error(`Unsupported file type: ${invalidFiles[0].name}`);
+      }
+
       const formData = new FormData();
       data.files.forEach((file) => {
         formData.append('files', file);
@@ -43,11 +63,12 @@ export default function Converter() {
       const response = await fetch('/api/convert', {
         method: 'POST',
         body: formData,
+        signal: AbortSignal.timeout(300000), // 5 minute timeout
       });
       
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
-        throw new Error(errorData.error || 'Conversion failed');
+        const errorData = await response.json().catch(() => ({ error: 'Network error occurred' }));
+        throw new Error(errorData.error || 'Conversion failed. Please try again.');
       }
       
       return response.blob();
@@ -73,10 +94,36 @@ export default function Converter() {
     onError: (error) => {
       setIsConverting(false);
       setProgress(0);
+      
+      // Enhanced error handling with retry suggestions
+      let errorMessage = error.message || "An error occurred during conversion.";
+      let description = "Please try again with a different file or format.";
+      
+      if (error.message?.includes('File too large')) {
+        description = "Try compressing your file or use a smaller file (max 100MB).";
+      } else if (error.message?.includes('Unsupported file type')) {
+        description = "Please use a supported file format (video, audio, image, document).";
+      } else if (error.message?.includes('Network error')) {
+        description = "Check your internet connection and try again.";
+      } else if (error.message?.includes('timeout')) {
+        description = "File processing took too long. Try a smaller file or different format.";
+      }
+      
       toast({
         title: "Conversion Failed",
-        description: error.message || "An error occurred during conversion.",
+        description: `${errorMessage} ${description}`,
         variant: "destructive",
+        action: (
+          <button 
+            onClick={() => {
+              setFiles([]);
+              setSettings({...settings, outputFormat: ''});
+            }}
+            className="text-sm underline"
+          >
+            Reset & Try Again
+          </button>
+        ),
       });
     }
   });
@@ -148,10 +195,19 @@ export default function Converter() {
         <div className="max-w-4xl mx-auto">
           {/* File Upload Zone */}
           <div 
-            className="bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl p-12 text-center hover:border-swift-teal transition-colors duration-200 cursor-pointer"
+            className="bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl p-12 mobile-drag-zone text-center hover:border-swift-teal transition-colors duration-200 cursor-pointer touch-action-manipulation"
             onDrop={handleDrop}
             onDragOver={handleDragOver}
             onClick={() => fileInputRef.current?.click()}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                fileInputRef.current?.click();
+              }
+            }}
+            aria-label="Upload files by clicking or dragging and dropping"
           >
             <input
               ref={fileInputRef}
@@ -182,7 +238,7 @@ export default function Converter() {
                   </div>
                 )}
               </div>
-              <Button className="bg-swift-teal text-white hover:bg-swift-teal-dark">
+              <Button className="bg-swift-teal text-white hover:bg-swift-teal-dark mobile-tap-target">
                 Choose Files
               </Button>
             </div>
@@ -277,15 +333,23 @@ export default function Converter() {
           {/* Progress Bar */}
           {isConverting && (
             <div className="mt-8">
-              <div className="bg-white border border-gray-200 rounded-lg p-6">
+              <div className="bg-white border border-gray-200 rounded-lg p-6 mobile-spacing">
                 <div className="flex items-center justify-between mb-4">
                   <h4 className="font-semibold text-swift-gray">Converting your file...</h4>
-                  <span className="text-sm text-gray-500">{progress}%</span>
+                  <span className="text-sm text-swift-teal font-medium">{progress}%</span>
                 </div>
-                <Progress value={progress} className="w-full" />
-                <div className="mt-2 text-sm text-gray-600 text-center">
-                  <span>Processing with AI enhancement...</span>
+                <Progress value={progress} className="w-full progress-pulse" />
+                <div className="mt-3 text-sm text-gray-600 text-center">
+                  <span className="flex items-center justify-center gap-2">
+                    <div className="animate-spin rounded-full h-4 w-4 border-2 border-swift-teal border-t-transparent"></div>
+                    Processing with AI enhancement...
+                  </span>
                 </div>
+                {progress > 50 && (
+                  <div className="mt-2 text-xs text-gray-500 text-center">
+                    Almost done! Please don't refresh the page.
+                  </div>
+                )}
               </div>
             </div>
           )}
@@ -295,7 +359,7 @@ export default function Converter() {
             <Button 
               onClick={startConversion}
               disabled={isConverting || files.length === 0}
-              className="bg-swift-teal text-white px-12 py-4 text-lg font-semibold hover:bg-swift-teal-dark shadow-lg disabled:opacity-50"
+              className="bg-swift-teal text-white px-12 py-4 text-lg font-semibold hover:bg-swift-teal-dark shadow-lg disabled:opacity-50 mobile-tap-target touch-action-manipulation"
             >
               {isConverting ? (
                 <>

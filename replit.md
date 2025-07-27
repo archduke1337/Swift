@@ -112,4 +112,36 @@ Preferred communication style: Simple, everyday language.
 - Comprehensive meta tags for social sharing
 - Sitemap and robots.txt included
 
-The application is designed to be fully self-contained and production-ready upon deployment, requiring no external manual setup beyond database provisioning and environment variable configuration.
+## Database Requirements
+
+**NO DATABASE REQUIRED** for production deployment on Vercel. The application is designed as a stateless serverless system:
+
+- **File conversion**: Processed in `/tmp` directory (serverless-compatible)
+- **Session management**: In-memory storage (resets per function call)
+- **User tracking**: Handled client-side for progress indication
+
+This makes deployment extremely simple - just connect GitHub to Vercel with zero configuration.
+
+## Mobile Optimization & Edge Cases
+
+### Mobile Experience
+- Touch-optimized UI with 44px minimum tap targets
+- Mobile-responsive drag-and-drop zones
+- Progressive enhancement for touch devices
+- Optimized progress indicators and error states
+
+### Edge Case Handling
+- File size validation (100MB limit with clear error messages)
+- File type validation with detailed feedback
+- Network timeout handling (5-minute max)
+- Corrupt file detection with graceful fallbacks
+- Enhanced error messages with retry suggestions
+
+### Testing Coverage
+- Mobile touch interaction testing
+- Large file upload validation
+- Network error simulation
+- Timeout and retry flows
+- Cross-device compatibility verification
+
+The application is designed to be fully self-contained and production-ready upon deployment, requiring no external setup or database configuration.
