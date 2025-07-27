@@ -1,4 +1,5 @@
 import { Calendar, ArrowRight, FileText, Zap, Shield } from "lucide-react";
+import { Link } from "wouter";
 
 interface BlogPost {
   id: string;
@@ -99,10 +100,13 @@ export default function Blog() {
                   <span>{post.readTime}</span>
                 </div>
                 
-                <button className="flex items-center gap-2 text-swift-teal font-medium hover:text-swift-teal-dark transition-colors duration-200 group">
+                <Link 
+                  href={`/blog/${post.id}`}
+                  className="flex items-center gap-2 text-swift-teal font-medium hover:text-swift-teal-dark transition-colors duration-200 group"
+                >
                   Read More
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
-                </button>
+                </Link>
               </div>
             </article>
           ))}
