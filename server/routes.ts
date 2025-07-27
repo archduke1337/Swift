@@ -247,6 +247,17 @@ async function convertWithOCR(inputPath: string, outputPath: string, settings: a
   }
 }
 
+// Health check endpoint for deployment verification
+router.get('/health', (req, res) => {
+  res.json({ 
+    status: 'ok', 
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development',
+    version: '1.0.0',
+    features: ['file-conversion', 'ai-enhancement', 'mobile-optimized']
+  });
+});
+
 function getContentType(format: string): string {
   const contentTypes: { [key: string]: string } = {
     'mp4': 'video/mp4',
