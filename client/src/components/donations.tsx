@@ -52,13 +52,9 @@ export default function Donations() {
               <div className="flex justify-center">
                 <div className="bg-gray-100 rounded-xl p-6 shadow-inner">
                   <img 
-                    src="/fampay-qr.jpg" 
+                    src="/assets/Fampay-QR_1753612356045.jpeg" 
                     alt="FamPay QR Code for Donations to SwiftFormat" 
-                    className="w-48 h-48 mx-auto"
-                    onError={(e) => {
-                      // Fallback to a placeholder QR code if image fails to load
-                      (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1617797689161-84bf2dcad3f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=300&h=300";
-                    }}
+                    className="w-48 h-48 mx-auto object-contain"
                   />
                   <p className="text-center text-sm text-gray-600 mt-4">Scan to donate via UPI</p>
                 </div>

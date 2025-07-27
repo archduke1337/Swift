@@ -12,6 +12,13 @@ export default function Hero() {
     <section id="hero" className="bg-gradient-to-br from-white to-gray-50 py-20" aria-labelledby="hero-heading">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
+          <div className="flex justify-center mb-8">
+            <img 
+              src="/assets/generated-image_1753612315636.png" 
+              alt="SwiftFormat Logo" 
+              className="w-20 h-20 md:w-24 md:h-24 object-contain"
+            />
+          </div>
           <h1 id="hero-heading" className="text-4xl md:text-6xl font-bold text-swift-gray mb-6">
             Fast, Free, AI-Powered
             <span className="text-swift-teal block">File Converter</span>

@@ -12,13 +12,9 @@ export default function About() {
             <div className="flex flex-col md:flex-row items-center gap-8">
               <div className="flex-shrink-0">
                 <img 
-                  src="/gaurav-photo.jpg" 
+                  src="/assets/WhatsApp Image 2025-07-27 at 3.59.57 PM_1753612347528.jpeg" 
                   alt="Gaurav - SwiftFormat Developer from Pune, India" 
                   className="w-32 h-32 md:w-48 md:h-48 rounded-full shadow-lg object-cover"
-                  onError={(e) => {
-                    // Fallback to a placeholder if image fails to load
-                    (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=300&h=300";
-                  }}
                 />
               </div>
               <div className="flex-1 text-left">
