@@ -120,6 +120,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Health check endpoint for deployment verification
+  app.get('/api/health', (req, res) => {
+    res.json({ 
+      status: 'ok', 
+      timestamp: new Date().toISOString(),
+      environment: process.env.NODE_ENV || 'development',
+      version: '1.0.0',
+      features: ['file-conversion', 'ai-enhancement', 'mobile-optimized']
+    });
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }
@@ -246,17 +257,6 @@ async function convertWithOCR(inputPath: string, outputPath: string, settings: a
     await fs.writeFile(outputPath, pdfBytes);
   }
 }
-
-// Health check endpoint for deployment verification
-router.get('/health', (req, res) => {
-  res.json({ 
-    status: 'ok', 
-    timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || 'development',
-    version: '1.0.0',
-    features: ['file-conversion', 'ai-enhancement', 'mobile-optimized']
-  });
-});
 
 function getContentType(format: string): string {
   const contentTypes: { [key: string]: string } = {
