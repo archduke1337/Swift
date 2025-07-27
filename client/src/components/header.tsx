@@ -18,12 +18,8 @@ export default function Header() {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <h1 className="text-2xl font-bold text-swift-teal cursor-pointer flex items-center" onClick={() => scrollToSection('hero')}>
-                <img 
-                  src="/assets/generated-image_1753612315636.png" 
-                  alt="SwiftFormat Logo" 
-                  className="w-8 h-8 mr-2 object-contain"
-                />
+              <h1 className="text-2xl font-bold text-swift-teal cursor-pointer" onClick={() => scrollToSection('hero')}>
+                <Zap className="w-6 h-6 mr-2 inline" aria-hidden="true" />
                 SwiftFormat
               </h1>
             </div>
