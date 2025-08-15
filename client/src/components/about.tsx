@@ -11,11 +11,9 @@ export default function About() {
           <div className="bg-gray-50 rounded-2xl p-8 md:p-12">
             <div className="flex flex-col md:flex-row items-center gap-8">
               <div className="flex-shrink-0">
-                <img 
-                  src="/assets/WhatsApp Image 2025-07-27 at 3.59.57 PM_1753612347528.jpeg" 
-                  alt="Gaurav - SwiftFormat Developer from Pune, India" 
-                  className="w-32 h-32 md:w-48 md:h-48 rounded-full shadow-lg object-cover"
-                />
+                <div className="w-32 h-32 md:w-48 md:h-48 rounded-full shadow-lg bg-gradient-to-br from-swift-teal to-swift-teal-dark flex items-center justify-center">
+                  <span className="text-white text-4xl md:text-6xl font-bold">G</span>
+                </div>
               </div>
               <div className="flex-1 text-left">
                 <h3 className="text-2xl font-bold text-swift-gray mb-4">Gaurav</h3>
