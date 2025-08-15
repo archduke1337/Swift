@@ -2,67 +2,372 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: hsl(0, 0%, 100%);
-  --foreground: hsl(20, 14.3%, 4.1%);
-  --muted: hsl(60, 4.8%, 95.9%);
-  --muted-foreground: hsl(25, 5.3%, 44.7%);
-  --popover: hsl(0, 0%, 100%);
-  --popover-foreground: hsl(20, 14.3%, 4.1%);
-  --card: hsl(0, 0%, 100%);
-  --card-foreground: hsl(20, 14.3%, 4.1%);
-  --border: hsl(20, 5.9%, 90%);
-  --input: hsl(20, 5.9%, 90%);
-  --primary: hsl(172, 98%, 38%);
-  --primary-foreground: hsl(211, 100%, 99%);
-  --secondary: hsl(60, 4.8%, 95.9%);
-  --secondary-foreground: hsl(24, 9.8%, 10%);
-  --accent: hsl(60, 4.8%, 95.9%);
-  --accent-foreground: hsl(24, 9.8%, 10%);
-  --destructive: hsl(0, 84.2%, 60.2%);
-  --destructive-foreground: hsl(60, 9.1%, 97.8%);
-  --ring: hsl(20, 14.3%, 4.1%);
-  --radius: 0.5rem;
-  --swift-teal: hsl(172, 98%, 38%);
-  --swift-teal-light: hsl(159, 64%, 59%);
-  --swift-teal-dark: hsl(160, 100%, 26%);
-  --swift-sky: hsl(199, 89%, 48%);
-  --swift-gray: hsl(217, 19%, 27%);
-  --swift-light: hsl(210, 40%, 98%);
-}
-
-.dark {
-  --background: hsl(240, 10%, 3.9%);
-  --foreground: hsl(0, 0%, 98%);
-  --muted: hsl(240, 3.7%, 15.9%);
-  --muted-foreground: hsl(240, 5%, 64.9%);
-  --popover: hsl(240, 10%, 3.9%);
-  --popover-foreground: hsl(0, 0%, 98%);
-  --card: hsl(240, 10%, 3.9%);
-  --card-foreground: hsl(0, 0%, 98%);
-  --border: hsl(240, 3.7%, 15.9%);
-  --input: hsl(240, 3.7%, 15.9%);
-  --primary: hsl(172, 98%, 38%);
-  --primary-foreground: hsl(211, 100%, 99%);
-  --secondary: hsl(240, 3.7%, 15.9%);
-  --secondary-foreground: hsl(0, 0%, 98%);
-  --accent: hsl(240, 3.7%, 15.9%);
-  --accent-foreground: hsl(0, 0%, 98%);
-  --destructive: hsl(0, 62.8%, 30.6%);
-  --destructive-foreground: hsl(0, 0%, 98%);
-  --ring: hsl(240, 4.9%, 83.9%);
-  --radius: 0.5rem;
-}
-
 @layer base {
+  :root {
+    --background: hsl(0, 0%, 100%);
+    --foreground: hsl(222, 47%, 11%);
+    --surface-100: hsl(0, 0%, 100%);
+    --surface-200: hsl(210, 20%, 98%);
+    --surface-300: hsl(210, 20%, 96%);
+    --surface-400: hsl(210, 20%, 94%);
+    --surface-alpha-100: hsla(0, 0%, 100%, 0.9);
+    --surface-alpha-200: hsla(210, 20%, 98%, 0.9);
+    --swift-teal: hsl(172, 98%, 38%);
+    --swift-teal-light: hsl(172, 98%, 45%);
+    --swift-teal-dark: hsl(172, 98%, 32%);
+    --swift-sky: hsl(199, 89%, 48%);
+    --swift-sky-light: hsl(199, 89%, 55%);
+    --swift-sky-dark: hsl(199, 89%, 42%);
+    --primary: var(--swift-teal);
+    --primary-foreground: hsl(0, 0%, 100%);
+    --secondary: hsl(210, 20%, 96%);
+    --secondary-foreground: hsl(222, 47%, 11%);
+    --muted: hsl(210, 20%, 96%);
+    --muted-foreground: hsl(215, 16%, 47%);
+    --accent: var(--swift-sky);
+    --accent-foreground: hsl(0, 0%, 100%);
+    --border: hsl(214, 32%, 91%);
+    --input: hsl(214, 32%, 91%);
+    --success: hsl(142, 76%, 36%);
+    --warning: hsl(38, 92%, 50%);
+    --error: hsl(0, 84%, 60%);
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  }
+
+  .dark {
+    --background: hsl(222, 47%, 11%);
+    --foreground: hsl(210, 40%, 98%);
+    --surface-100: hsl(222, 47%, 11%);
+    --surface-200: hsl(223, 47%, 13%);
+    --surface-300: hsl(223, 47%, 15%);
+    --surface-400: hsl(223, 47%, 17%);
+    --surface-alpha-100: hsla(222, 47%, 11%, 0.9);
+    --surface-alpha-200: hsla(223, 47%, 13%, 0.9);
+    --swift-teal: hsl(172, 98%, 45%);
+    --swift-teal-light: hsl(172, 98%, 52%);
+    --swift-teal-dark: hsl(172, 98%, 38%);
+    --muted: hsl(223, 47%, 15%);
+    --muted-foreground: hsl(215, 20%, 65%);
+    --border: hsl(223, 47%, 15%);
+    --input: hsl(223, 47%, 15%);
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.1);
+    --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.15);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.15);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.15);
+  }
+
   * {
-    @apply border-border;
+    border-color: var(--border);
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  :focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--swift-teal);
   }
 }
+
+@layer base {
+  :root {
+    --background: hsl(0, 0%, 100%);
+    --foreground: hsl(222, 47%, 11%);
+    
+    --surface-100: hsl(0, 0%, 100%);
+    --surface-200: hsl(210, 20%, 98%);
+    --surface-300: hsl(210, 20%, 96%);
+    --surface-400: hsl(210, 20%, 94%);
+    
+    --surface-alpha-100: hsla(0, 0%, 100%, 0.9);
+    --surface-alpha-200: hsla(210, 20%, 98%, 0.9);
+    
+    --swift-teal: hsl(172, 98%, 38%);
+    --swift-teal-light: hsl(172, 98%, 45%);
+    --swift-teal-dark: hsl(172, 98%, 32%);
+    --swift-sky: hsl(199, 89%, 48%);
+    --swift-sky-light: hsl(199, 89%, 55%);
+    --swift-sky-dark: hsl(199, 89%, 42%);
+    
+    --primary: var(--swift-teal);
+    --primary-light: var(--swift-teal-light);
+    --primary-dark: var(--swift-teal-dark);
+    --primary-foreground: hsl(0, 0%, 100%);
+    
+    --secondary: hsl(210, 20%, 96%);
+    --secondary-light: hsl(210, 20%, 98%);
+    --secondary-dark: hsl(210, 20%, 94%);
+    --secondary-foreground: hsl(222, 47%, 11%);
+    
+    --accent: var(--swift-sky);
+    --accent-light: var(--swift-sky-light);
+    --accent-dark: var(--swift-sky-dark);
+    --accent-foreground: hsl(0, 0%, 100%);
+    
+    --muted: hsl(210, 20%, 96%);
+    --muted-foreground: hsl(215, 16%, 47%);
+    
+    --success: hsl(142, 76%, 36%);
+    --success-light: hsl(142, 76%, 41%);
+    --success-dark: hsl(142, 76%, 31%);
+    --success-foreground: hsl(0, 0%, 100%);
+    
+    --warning: hsl(38, 92%, 50%);
+    --warning-light: hsl(38, 92%, 55%);
+    --warning-dark: hsl(38, 92%, 45%);
+    --warning-foreground: hsl(0, 0%, 100%);
+    
+    --error: hsl(0, 84%, 60%);
+    --error-light: hsl(0, 84%, 65%);
+    --error-dark: hsl(0, 84%, 55%);
+    --error-foreground: hsl(0, 0%, 100%);
+    
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  }
+  
+  .dark {
+    --background: hsl(222, 47%, 11%);
+    --foreground: hsl(210, 40%, 98%);
+    
+    --surface-100: hsl(222, 47%, 11%);
+    --surface-200: hsl(223, 47%, 13%);
+    --surface-300: hsl(223, 47%, 15%);
+    --surface-400: hsl(223, 47%, 17%);
+    
+    --surface-alpha-100: hsla(222, 47%, 11%, 0.9);
+    --surface-alpha-200: hsla(223, 47%, 13%, 0.9);
+    
+    --swift-teal: hsl(172, 98%, 45%);
+    --swift-teal-light: hsl(172, 98%, 52%);
+    --swift-teal-dark: hsl(172, 98%, 38%);
+    
+    --muted: hsl(223, 47%, 15%);
+    --muted-foreground: hsl(215, 20%, 65%);
+    
+    --success: hsl(142, 76%, 45%);
+    --success-light: hsl(142, 76%, 52%);
+    --success-dark: hsl(142, 76%, 38%);
+    
+    --warning: hsl(38, 92%, 55%);
+    --warning-light: hsl(38, 92%, 62%);
+    --warning-dark: hsl(38, 92%, 48%);
+    
+    --error: hsl(0, 84%, 65%);
+    --error-light: hsl(0, 84%, 72%);
+    --error-dark: hsl(0, 84%, 58%);
+    
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.1);
+    --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.15), 0 1px 2px -1px rgb(0 0 0 / 0.15);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.15), 0 2px 4px -2px rgb(0 0 0 / 0.15);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.15), 0 4px 6px -4px rgb(0 0 0 / 0.15);
+  }
+
+  * {
+    border-color: var(--border);
+  }
+  
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+  
+  :focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--swift-teal);
+  }
+}
+
+:root {
+  /* Base colors */
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(222, 47%, 11%);
+  
+  /* Surface colors */
+  --surface-100: hsl(0, 0%, 100%);
+  --surface-200: hsl(210, 20%, 98%);
+  --surface-300: hsl(210, 20%, 96%);
+  --surface-400: hsl(210, 20%, 94%);
+  
+  /* Brand colors */
+  --swift-teal: hsl(172, 98%, 38%);
+  --swift-teal-light: hsl(172, 98%, 45%);
+  --swift-teal-dark: hsl(172, 98%, 32%);
+  --swift-sky: hsl(199, 89%, 48%);
+  --swift-sky-light: hsl(199, 89%, 55%);
+  --swift-sky-dark: hsl(199, 89%, 42%);
+  
+  /* Semantic colors */
+  --primary: var(--swift-teal);
+  --primary-light: var(--swift-teal-light);
+  --primary-dark: var(--swift-teal-dark);
+  --primary-foreground: hsl(0, 0%, 100%);
+  
+  --secondary: hsl(210, 20%, 96%);
+  --secondary-light: hsl(210, 20%, 98%);
+  --secondary-dark: hsl(210, 20%, 94%);
+  --secondary-foreground: hsl(222, 47%, 11%);
+  
+  --accent: var(--swift-sky);
+  --accent-light: var(--swift-sky-light);
+  --accent-dark: var(--swift-sky-dark);
+  --accent-foreground: hsl(0, 0%, 100%);
+  
+  /* UI colors */
+  --muted: hsl(210, 20%, 96%);
+  --muted-foreground: hsl(215, 16%, 47%);
+  
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(222, 47%, 11%);
+  
+  --card: var(--surface-100);
+  --card-foreground: hsl(222, 47%, 11%);
+  
+  --border: hsl(214, 32%, 91%);
+  --input: hsl(214, 32%, 91%);
+  
+  --destructive: hsl(0, 84%, 60%);
+  --destructive-light: hsl(0, 84%, 65%);
+  --destructive-dark: hsl(0, 84%, 55%);
+  --destructive-foreground: hsl(0, 0%, 100%);
+  
+  --success: hsl(142, 76%, 36%);
+  --success-light: hsl(142, 76%, 41%);
+  --success-dark: hsl(142, 76%, 31%);
+  --success-foreground: hsl(0, 0%, 100%);
+  
+  --warning: hsl(38, 92%, 50%);
+  --warning-light: hsl(38, 92%, 55%);
+  --warning-dark: hsl(38, 92%, 45%);
+  --warning-foreground: hsl(0, 0%, 100%);
+  
+  --ring: var(--swift-teal);
+  --radius: 0.5rem;
+}
+
+.dark {
+  /* Base colors */
+  --background: hsl(222, 47%, 11%);
+  --foreground: hsl(210, 40%, 98%);
+  
+  /* Surface colors */
+  --surface-100: hsl(222, 47%, 11%);
+  --surface-200: hsl(223, 47%, 13%);
+  --surface-300: hsl(223, 47%, 15%);
+  --surface-400: hsl(223, 47%, 17%);
+  
+  /* Brand colors in dark mode */
+  --swift-teal: hsl(172, 98%, 45%);
+  --swift-teal-light: hsl(172, 98%, 52%);
+  --swift-teal-dark: hsl(172, 98%, 38%);
+  --swift-sky: hsl(199, 89%, 55%);
+  --swift-sky-light: hsl(199, 89%, 62%);
+  --swift-sky-dark: hsl(199, 89%, 48%);
+  
+  /* Semantic colors */
+  --primary: var(--swift-teal);
+  --primary-light: var(--swift-teal-light);
+  --primary-dark: var(--swift-teal-dark);
+  --primary-foreground: hsl(222, 47%, 11%);
+  
+  --secondary: hsl(223, 47%, 15%);
+  --secondary-light: hsl(223, 47%, 17%);
+  --secondary-dark: hsl(223, 47%, 13%);
+  --secondary-foreground: hsl(210, 40%, 98%);
+  
+  --accent: var(--swift-sky);
+  --accent-light: var(--swift-sky-light);
+  --accent-dark: var(--swift-sky-dark);
+  --accent-foreground: hsl(222, 47%, 11%);
+  
+  /* UI colors */
+  --muted: hsl(223, 47%, 15%);
+  --muted-foreground: hsl(215, 20%, 65%);
+  
+  --popover: hsl(223, 47%, 11%);
+  --popover-foreground: hsl(210, 40%, 98%);
+  
+  --card: var(--surface-100);
+  --card-foreground: hsl(210, 40%, 98%);
+  
+  --border: hsl(223, 47%, 15%);
+  --input: hsl(223, 47%, 15%);
+  
+  --destructive: hsl(0, 84%, 65%);
+  --destructive-light: hsl(0, 84%, 70%);
+  --destructive-dark: hsl(0, 84%, 60%);
+  --destructive-foreground: hsl(222, 47%, 11%);
+  
+  --success: hsl(142, 76%, 41%);
+  --success-light: hsl(142, 76%, 46%);
+  --success-dark: hsl(142, 76%, 36%);
+  --success-foreground: hsl(222, 47%, 11%);
+  
+  --warning: hsl(38, 92%, 55%);
+  --warning-light: hsl(38, 92%, 60%);
+  --warning-dark: hsl(38, 92%, 50%);
+  --warning-foreground: hsl(222, 47%, 11%);
+  
+  --ring: var(--swift-teal);
+}
+
+/* Theme transition utilities */
+@layer utilities {
+  .theme-transition {
+    transition-property: color, background-color, border-color, box-shadow;
+    transition-duration: 200ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .theme-transition-all {
+    transition-property: all;
+    transition-duration: 200ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Surface utilities */
+  .bg-surface-100 { background-color: var(--surface-100); }
+  .bg-surface-200 { background-color: var(--surface-200); }
+  .bg-surface-300 { background-color: var(--surface-300); }
+  .bg-surface-400 { background-color: var(--surface-400); }
+
+  /* Swift brand color utilities */
+  .text-swift-teal { color: var(--swift-teal); }
+  .bg-swift-teal { background-color: var(--swift-teal); }
+  .hover\:bg-swift-teal:hover { background-color: var(--swift-teal); }
+  .hover\:text-swift-teal:hover { color: var(--swift-teal); }
+  
+  .bg-swift-teal-light { background-color: var(--swift-teal-light); }
+  .hover\:bg-swift-teal-light:hover { background-color: var(--swift-teal-light); }
+  
+  .bg-swift-teal-dark { background-color: var(--swift-teal-dark); }
+  .hover\:bg-swift-teal-dark:hover { background-color: var(--swift-teal-dark); }
+  
+  /* Success, warning, and destructive utilities */
+  .text-success { color: var(--success); }
+  .bg-success { background-color: var(--success); }
+  .hover\:bg-success:hover { background-color: var(--success); }
+  
+  .text-warning { color: var(--warning); }
+  .bg-warning { background-color: var(--warning); }
+  .hover\:bg-warning:hover { background-color: var(--warning); }
+  
+  .text-destructive { color: var(--destructive); }
+  .bg-destructive { background-color: var(--destructive); }
+  .hover\:bg-destructive:hover { background-color: var(--destructive); }
+}
+
+/* Base styles are now in the root layer */
 
 @layer utilities {
   .text-swift-teal {

@@ -131,6 +131,44 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
   });
 
+  // Serve sitemap.xml (fall back to static client/public/sitemap.xml)
+  app.get('/sitemap.xml', async (req, res) => {
+    try {
+      // If a static sitemap exists in client/public, serve it
+      const staticPath = path.resolve(process.cwd(), 'client', 'public', 'sitemap.xml');
+      try {
+        const xml = await fs.readFile(staticPath, 'utf8');
+        res.setHeader('Content-Type', 'application/xml');
+        return res.send(xml);
+      } catch (err) {
+        // continue to dynamic generation
+      }
+
+      // Basic dynamic sitemap: home + blog posts encoded from in-repo list
+      const host = process.env.SITE_URL || 'https://swiftformat.vercel.app'
+      const posts = [
+        'ai-file-conversion-2025',
+        'mobile-file-processing',
+        'secure-serverless-conversion',
+      ]
+
+      const urls = [
+        { loc: `${host}/`, changefreq: 'weekly', priority: 1.0 },
+        ...posts.map((id) => ({ loc: `${host}/blog/${id}`, changefreq: 'monthly', priority: 0.6 })),
+      ]
+
+      const xml = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+        .concat(urls.map(u => `  <url><loc>${u.loc}</loc><changefreq>${u.changefreq}</changefreq><priority>${u.priority}</priority></url>`))
+        .concat(['</urlset>'])
+        .join('\n')
+
+      res.setHeader('Content-Type', 'application/xml')
+      res.send(xml)
+    } catch (error) {
+      res.status(500).send('Failed to generate sitemap')
+    }
+  })
+
   const httpServer = createServer(app);
   return httpServer;
 }
