@@ -7,6 +7,13 @@
     "api/*.js": {
       "runtime": "@vercel/node"
     }
+    ,
+    "dist/*.js": {
+      "runtime": "@vercel/node"
+    },
+    "dist/*.ts": {
+      "runtime": "@vercel/node"
+    }
   },
   "builds": [
     {
