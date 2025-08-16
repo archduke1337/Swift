@@ -1,14 +1,14 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import path from 'path'
-import autoprefixer from 'autoprefixer'
-import tailwindcss from 'tailwindcss'
-import tailwindConfig from './tailwind.config'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import path from 'path';
+import autoprefixer from 'autoprefixer';
+import tailwindcss from 'tailwindcss';
+import tailwindConfig from './tailwind.config';
 
-const rootDir = path.resolve(new URL('.', import.meta.url).pathname, 'client')
+const rootDir = path.resolve(new URL('.', import.meta.url).pathname, 'client');
 
 export default defineConfig({
-  base: './',
+  base: '/',
   plugins: [react()],
   css: {
     postcss: {
@@ -33,4 +33,4 @@ export default defineConfig({
       deny: ['**/.*'],
     },
   },
-})
+});
