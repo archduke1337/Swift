@@ -3,7 +3,10 @@ import fs from "fs";
 import path from "path";
 import { createServer as createViteServer, createLogger } from "vite";
 import { type Server } from "http";
-import viteConfig from "../vite.config";
+// don't statically import the project's vite config here - that file
+// uses `import.meta` which prevents this file from being compiled by
+// tsc when building the api. We'll rely on Vite's defaults and explicit
+// options below instead.
 import { nanoid } from "nanoid";
 
 const viteLogger = createLogger();
@@ -27,7 +30,6 @@ export async function setupVite(app: Express, server: Server) {
   };
 
   const vite = await createViteServer({
-    ...viteConfig,
     configFile: false,
     customLogger: {
       ...viteLogger,
@@ -45,12 +47,8 @@ export async function setupVite(app: Express, server: Server) {
     const url = req.originalUrl;
 
     try {
-      const clientTemplate = path.resolve(
-        import.meta.dirname,
-        "..",
-        "client",
-        "index.html",
-      );
+  const repoRoot = path.resolve(process.cwd());
+  const clientTemplate = path.resolve(repoRoot, "client", "index.html");
 
       // always reload the index.html file from disk incase it changes
       let template = await fs.promises.readFile(clientTemplate, "utf-8");
@@ -68,7 +66,7 @@ export async function setupVite(app: Express, server: Server) {
 }
 
 export function serveStatic(app: Express) {
-  const distPath = path.resolve(import.meta.dirname, "public");
+  const distPath = path.resolve(process.cwd(), "client", "dist");
 
   if (!fs.existsSync(distPath)) {
     throw new Error(
