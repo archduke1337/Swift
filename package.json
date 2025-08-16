@@ -7,7 +7,7 @@
     "dev": "cross-env NODE_ENV=development tsx api/index.ts",
   "build": "npm run build:client",
   "build:client": "vite build",
-  "vercel-build": "tsc -p tsconfig.build.json && copy dist\\api\\index.js dist\\index.js && vite build",
+  "vercel-build": "tsc -p tsconfig.build.json && cp dist/api/index.js dist/index.js && vite build",
     "check": "tsc",
     "db:push": "drizzle-kit push"
   },
