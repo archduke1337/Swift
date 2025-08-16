@@ -1,17 +1,7 @@
 {
   "version": 2,
   "functions": {
-    "api/*.ts": {
-      "runtime": "@vercel/node"
-    },
-    "api/*.js": {
-      "runtime": "@vercel/node"
-    }
-    ,
-    "dist/*.js": {
-      "runtime": "@vercel/node"
-    },
-    "dist/*.ts": {
+    "dist/index.js": {
       "runtime": "@vercel/node"
     }
   },
