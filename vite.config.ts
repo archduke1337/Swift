@@ -8,6 +8,7 @@ import tailwindConfig from './tailwind.config'
 const rootDir = path.resolve(new URL('.', import.meta.url).pathname, 'client')
 
 export default defineConfig({
+  base: './',
   plugins: [react()],
   css: {
     postcss: {
