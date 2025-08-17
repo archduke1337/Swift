@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import fampayQR from "@assets/fampay-qr-2.jpeg";
 
 export default function Donations() {
   const [hasDonated, setHasDonated] = useState(false);
@@ -53,8 +52,8 @@ export default function Donations() {
               <div className="flex justify-center">
                 <div className="bg-gray-100 rounded-xl p-6 shadow-inner">
                   <img 
-                    src={fampayQR}
-                    alt="FamPay QR Code for Donations to SwiftFormat"
+                    src="/assets/fampay-qr-2.jpeg" 
+                    alt="FamPay QR Code for Donations to SwiftFormat" 
                     className="w-48 h-48 mx-auto object-contain"
                   />
                   <p className="text-center text-sm text-gray-600 mt-4">Scan to donate via UPI</p>
