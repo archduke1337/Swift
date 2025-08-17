@@ -19,7 +19,7 @@ export default defineConfig({
     alias: {
       '@': path.resolve(process.cwd(), 'client', 'src'),
       '@shared': path.resolve(process.cwd(), 'shared'),
-      '@assets': path.resolve(process.cwd(), 'attached_assets'),
+      '@assets': path.resolve(process.cwd(), 'client', 'public', 'assets'),
     },
   },
   root: path.resolve(process.cwd(), 'client'),
