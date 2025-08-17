@@ -43,6 +43,20 @@ const config: Config = {
       colors: {
         background: 'var(--background)',
         foreground: 'var(--foreground)',
+        'swift-teal': {
+          DEFAULT: '#00BCD4',
+          50: '#E0F7FA',
+          100: '#B2EBF2',
+          200: '#80DEEA',
+          300: '#4DD0E1',
+          400: '#26C6DA',
+          500: '#00BCD4',
+          600: '#00ACC1',
+          700: '#0097A7',
+          800: '#00838F',
+          900: '#006064',
+          dark: '#005054'
+        },
         surface: {
           100: 'var(--surface-100)',
           200: 'var(--surface-200)',
