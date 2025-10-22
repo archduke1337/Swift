@@ -5,17 +5,33 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [isDark, setIsDark] = useState<boolean>(() => {
+  // Start with undefined to avoid reading window/localStorage during SSR.
+  const [isDark, setIsDark] = useState<boolean>(() => false);
+
+  // On mount, read saved preference or system preference and apply it.
+  useEffect(() => {
     try {
-      const stored = localStorage.getItem("theme");
-      if (stored === "dark") return true;
-      if (stored === "light") return false;
-      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const stored = typeof window !== 'undefined' ? localStorage.getItem('theme') : null;
+      if (stored === 'dark') {
+        setIsDark(true);
+        document.documentElement.classList.add('dark');
+        return;
+      }
+      if (stored === 'light') {
+        setIsDark(false);
+        document.documentElement.classList.remove('dark');
+        return;
+      }
+      const prefersDark = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      setIsDark(Boolean(prefersDark));
+      if (prefersDark) document.documentElement.classList.add('dark');
+      else document.documentElement.classList.remove('dark');
     } catch (err) {
-      console.error('Failed to access theme preference:', err);
-      return false;
+      // noop in restricted environments
+      console.error('Failed to initialize theme:', err);
     }
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Handle scroll effects
   useEffect(() => {
@@ -43,8 +59,9 @@ export default function Header() {
         document.documentElement.classList.remove('dark');
         localStorage.setItem('theme', 'light');
       }
-    } catch {
-      // ignore (server rendering or privacy-restricted environments)
+    } catch (err) {
+      // ignore in restricted environments, but log for debugging
+      console.error('Failed to persist/apply theme:', err);
     }
   }, [isDark]);
 

@@ -253,6 +253,10 @@
   
   --ring: var(--swift-teal);
   --radius: 0.5rem;
+
+  /* Compatibility aliases used across components */
+  --swift-light: var(--surface-100);
+  --swift-gray: var(--foreground);
 }
 
 .dark {
@@ -319,6 +323,10 @@
   --warning-foreground: hsl(222, 47%, 11%);
   
   --ring: var(--swift-teal);
+
+  /* Compatibility aliases used across components */
+  --swift-light: var(--surface-200);
+  --swift-gray: var(--foreground);
 }
 
 /* Theme transition utilities */
