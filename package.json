@@ -5,9 +5,9 @@
   "license": "MIT",
   "scripts": {
     "dev": "cross-env NODE_ENV=development tsx api/index.ts",
-  "build": "npm run build:client",
-  "build:client": "vite build",
-  "vercel-build": "tsc -p tsconfig.build.json && vite build",
+    "build": "npm run build:client",
+    "build:client": "vite build",
+    "vercel-build": "tsc -p tsconfig.build.json && vite build",
     "check": "tsc",
     "db:push": "drizzle-kit push"
   },
@@ -101,7 +101,7 @@
     "@vitejs/plugin-react": "^4.3.2",
     "autoprefixer": "^10.4.21",
     "cross-env": "^7.0.3",
-    "drizzle-kit": "^0.31.4",
+    "drizzle-kit": "^0.31.5",
     "esbuild": "^0.25.0",
     "postcss": "^8.5.6",
     "postcss-nested": "^7.0.2",
